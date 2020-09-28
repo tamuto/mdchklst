@@ -3,20 +3,15 @@
     "url": "http://localhost:8065/hooks/jdnnhr66wiyt8ggfeywuf9nwar",
     "title": "Sample Check List",
     "description": "Caution !<br>BE CAREFULL !",
-    "items": [
-       {
-          "Category1": [
-             "check1",
-             "check2",
-             "check3"
-          ]
-       },
-       {
-          "Category2": [
-             "todo1",
-             "todo2"
-          ]
-       },
-       [ "somecheck1", "somecheck2" ]
-    ]
+    "items": {
+        "Category1": [
+            "check1",
+            "check2",
+            "check3"
+        ],
+        "Category2": [
+            "todo1",
+            "todo2"
+        ]
+    }
  }

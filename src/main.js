@@ -23,33 +23,18 @@ if(location.search != '') {
     var template = location.search.substring(1)
     m.request({
         method: 'GET',
-        url: '/templates/' + template + '.json',
+        url: 'templates/' + template + '.json',
     }).then(function(result) {
-        items = []
-        for(var item of result.items) {
-            if(Array.isArray(item)) {
-                var subitems = []
-                for(var s of item) {
-                    var val = new String(s)
-                    val.id = generateId()
-                    val.value = false
-                    subitems.push(val)
-                }
-                items.push(subitems)
-            } else {
-                subitems = {}
-                for(const [key, children] of Object.entries(item)) {
-                    var subsub = []
-                    for(var s of children) {
-                        var val = new String(s)
-                        val.id = generateId()
-                        val.value = false
-                        subsub.push(val)
-                    }
-                    subitems[key] = subsub
-                }
-                items.push(subitems)
+        items = {}
+        for(const [key, children] of Object.entries(result.items)) {
+            var sub = []
+            for(var s of children) {
+                var val = new String(s)
+                val.id = generateId()
+                val.value = false
+                sub.push(val)
             }
+            items[key] = sub
         }
         template = result
     })
@@ -59,22 +44,12 @@ if(location.search != '') {
 
 function makeMattermostPayload() {
     var result = ""
-    for(var item of items) {
-        if(Array.isArray(item)) {
-            for(var s of item) {
-                result += '- ['
-                result += s.value? 'x' : ' '
-                result += '] ' + s.toString() + '\n'
-            }
-        } else {
-            for(const [key, children] of Object.entries(item)) {
-                result += key + '\n'
-                for(var s of children) {
-                    result += '- ['
-                    result += s.value? 'x' : ' '
-                    result += '] ' + s.toString() + '\n'
-                }
-            }
+    for(const [key, children] of Object.entries(items)) {
+        result += key + '\n'
+        for(var s of children) {
+            result += '- ['
+            result += s.value? 'x' : ' '
+            result += '] ' + s.toString() + '\n'
         }
     }
     return {
@@ -129,24 +104,17 @@ var CheckList = {
         return [
             template.description && CheckList.descript (),
             items && <form onsubmit='return false'>
-                {items.map(function(item) {
-                    if(Array.isArray(item)) {
-                        return item.map(function(subitem) {
-                            return CheckList.checkbox(subitem)
-                        })
-                    }
-                    for(const [key, children] of Object.entries(item)) {
-                        return [
-                            <h3 class="title is-5 mb-2">{key}</h3>,
-                            <ul class="pl-4 mb-4">
-                                {children.map(function(subitem) {
-                                    return <li>
-                                        {CheckList.checkbox(subitem)}
-                                    </li>
-                                })}
-                            </ul>
-                        ]
-                    }
+                {Object.entries(items).map(function([key, children]) {
+                    return [
+                        <h3 class="title is-5 mb-2">{key}</h3>,
+                        <ul class="pl-4 mb-4">
+                            {children.map(function(subitem) {
+                                return <li>
+                                    {CheckList.checkbox(subitem)}
+                                </li>
+                            })}
+                        </ul>
+                    ]
                 })}
                 <div class="field">
                     <div class="control" style="text-align: center">
