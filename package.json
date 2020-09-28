@@ -1,0 +1,21 @@
+{
+  "name": "mdchklst",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build src/index.html"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "bulma": "^0.9.0",
+    "mithril": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "parcel-bundler": "^1.12.4"
+  }
+}
